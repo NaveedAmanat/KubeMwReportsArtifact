@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-service
+  namespace: devolpment
+spec:
+  selector:
+    matchLabels:
+      app: report-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: report-service
+    spec:
+      containers:
+      - name: report-service
+        image: navedamanat/report-service:latest 
+
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8787
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: report-service
+  namespace: devolpment
+spec:
+  selector:
+    app: report-service
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8787
